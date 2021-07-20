@@ -10,6 +10,24 @@ Class {
 	#category : #'Geo Oudpapier Domain'
 }
 
+{ #category : #accessing }
+GeoOPUserCollectionPartTime class >> neoJsonMappingOn: mapping [
+
+	"user dateAndTime partTime status"
+
+	mapping
+		mapAccessor: #partTimeName to: #partTime;
+		mapAccessor: #userId to: #user;
+		mapAccessor: #dateAndTimeString to: #datetime;
+		mapAccessor: #statusSymbol to: #status
+]
+
+{ #category : #accessing }
+GeoOPUserCollectionPartTime class >> partTimeName [
+
+	self subclassResponsibility 
+]
+
 { #category : #comparing }
 GeoOPUserCollectionPartTime >> <= aPartTime [
 
@@ -38,6 +56,12 @@ GeoOPUserCollectionPartTime >> dateAndTime [
 { #category : #accessing }
 GeoOPUserCollectionPartTime >> dateAndTime: anObject [
 	dateAndTime := anObject
+]
+
+{ #category : #accessing }
+GeoOPUserCollectionPartTime >> dateAndTimeString [
+
+	^dateAndTime printString
 ]
 
 { #category : #accessing }
@@ -107,6 +131,12 @@ GeoOPUserCollectionPartTime >> partTime [
 { #category : #accessing }
 GeoOPUserCollectionPartTime >> partTime: anObject [
 	partTime := anObject
+]
+
+{ #category : #accessing }
+GeoOPUserCollectionPartTime >> partTimeName [
+
+	^self class partTimeName
 ]
 
 { #category : #printing }
@@ -193,6 +223,13 @@ GeoOPUserCollectionPartTime >> status: newStatus [
 ]
 
 { #category : #accessing }
+GeoOPUserCollectionPartTime >> statusSymbol [
+
+	^status statusSymbol
+	
+]
+
+{ #category : #accessing }
 GeoOPUserCollectionPartTime >> title [
 	^partTime title
 ]
@@ -205,4 +242,10 @@ GeoOPUserCollectionPartTime >> user [
 { #category : #accessing }
 GeoOPUserCollectionPartTime >> user: anObject [
 	user := anObject
+]
+
+{ #category : #accessing }
+GeoOPUserCollectionPartTime >> userId [
+
+	^user id
 ]
