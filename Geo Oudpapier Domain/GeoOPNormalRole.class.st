@@ -4,13 +4,13 @@ Class {
 	#category : #'Geo Oudpapier Domain'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GeoOPNormalRole class >> roleName [
 
 	^'Normaal'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GeoOPNormalRole class >> roleString [
 
 	^'normal'

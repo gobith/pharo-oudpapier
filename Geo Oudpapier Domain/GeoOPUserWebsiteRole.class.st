@@ -28,3 +28,9 @@ GeoOPUserWebsiteRole >> isAdmin [
 
 	^false
 ]
+
+{ #category : #accessing }
+GeoOPUserWebsiteRole >> roleString [
+
+	^self class roleString
+]

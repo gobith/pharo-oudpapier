@@ -17,6 +17,21 @@ Class {
 }
 
 { #category : #accessing }
+GeoOPUser class >> neoJsonMappingOn: mapping [
+
+	"schedule id name email phoneNumber password role websiteRole collectionPartTimes exchangeDayTemplate"
+
+	mapping
+		mapInstVar: #id;
+		mapInstVar: #name;
+		mapInstVar: #email;
+		mapInstVar: #phoneNumber;
+		mapAccessor: #roleString to: #role;
+		mapAccessor: #websiteRoleString to: #websiteRole
+		
+]
+
+{ #category : #accessing }
 GeoOPUser >> activeSortedCollectionPartTimes [
 
 	^self sortedCollectionPartTimes select: [ : partTime | partTime isActive ]
@@ -202,6 +217,12 @@ GeoOPUser >> role: aRole [
 ]
 
 { #category : #accessing }
+GeoOPUser >> roleString [
+
+	^role roleString
+]
+
+{ #category : #accessing }
 GeoOPUser >> schedule [
 	^ schedule
 ]
@@ -337,6 +358,12 @@ GeoOPUser >> websiteRole [
 GeoOPUser >> websiteRole: aRole [
 
 	websiteRole := aRole
+]
+
+{ #category : #accessing }
+GeoOPUser >> websiteRoleString [ 
+
+	^websiteRole roleString
 ]
 
 { #category : #'mail old' }

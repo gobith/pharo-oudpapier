@@ -47,6 +47,12 @@ GeoOPUserRole >> isNormal [
 ]
 
 { #category : #testing }
+GeoOPUserRole >> roleString [
+
+	^self class roleString
+]
+
+{ #category : #testing }
 GeoOPUserRole >> showInSchedule [
 
 	^true
