@@ -22,6 +22,8 @@ GeoOPCollectionDay class >> neoJsonMappingOn: mapping [
 
 	mapping
 		mapAccessor: #dateString to: #date;
+		mapAccessor: #dayOfMonth;
+		mapAccessor: #dayName;
 		mapInstVar: #partTimes
 ]
 
@@ -43,6 +45,12 @@ GeoOPCollectionDay >> dateString [
 { #category : #accessing }
 GeoOPCollectionDay >> dayName [
 	^self class dayNames at: date weekdayIndex
+]
+
+{ #category : #accessing }
+GeoOPCollectionDay >> dayOfMonth [
+
+	^date dayOfMonth 
 ]
 
 { #category : #initialization }
