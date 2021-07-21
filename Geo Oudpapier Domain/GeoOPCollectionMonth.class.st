@@ -17,6 +17,18 @@ GeoOPCollectionMonth class >> monthNames [
 ]
 
 { #category : #accessing }
+GeoOPCollectionMonth class >> neoJsonMappingOn: mapping [
+
+	"monthObject month index days"
+
+	mapping
+		mapInstVar: #index;
+		mapInstVar: #month;
+		mapAccessor: #year;
+		mapInstVar: #days
+]
+
+{ #category : #accessing }
 GeoOPCollectionMonth >> days [
 	^ days
 ]

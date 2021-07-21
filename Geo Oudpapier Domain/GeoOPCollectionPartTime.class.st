@@ -13,12 +13,27 @@ Class {
 	#category : #'Geo Oudpapier Domain'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 GeoOPCollectionPartTime class >> fromString: aString [
 	^ (self subclasses detect: [ :cls | cls partTimeName = aString ]) new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+GeoOPCollectionPartTime class >> neoJsonMappingOn: mapping [
+
+	"dateAndTime day title numberOfUsers needCar status nrOfSendMail"
+
+	mapping
+		mapAccessor: #dateAndTimeString to: #datetime;
+		mapInstVar: #title;
+		mapInstVar: #numberOfUsers;
+		mapAccessor: #statusSymbol to: #status;
+		mapAccessor: #longName;
+		mapAccessor: #shortName
+		
+]
+
+{ #category : #accessing }
 GeoOPCollectionPartTime class >> partTimeName [
 
 	^self subclassResponsibility 
@@ -84,6 +99,12 @@ GeoOPCollectionPartTime >> dateAndTime [
 GeoOPCollectionPartTime >> dateAndTime: aDateAndTime [
 
 	dateAndTime := aDateAndTime
+]
+
+{ #category : #accessing }
+GeoOPCollectionPartTime >> dateAndTimeString [
+
+	^dateAndTime printString 
 ]
 
 { #category : #accessing }
@@ -289,6 +310,18 @@ GeoOPCollectionPartTime >> status [
 GeoOPCollectionPartTime >> status: aStatus [
 
 	status := aStatus
+]
+
+{ #category : #accessing }
+GeoOPCollectionPartTime >> statusString [
+
+	^status statusString
+]
+
+{ #category : #accessing }
+GeoOPCollectionPartTime >> statusSymbol [
+
+	^status statusSymbol
 ]
 
 { #category : #accessing }

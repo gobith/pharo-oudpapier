@@ -206,6 +206,12 @@ GeoOPCollectionSchedule >> createCollectionYears [
 			collectionYears add: year ]
 ]
 
+{ #category : #accessing }
+GeoOPCollectionSchedule >> currentCollectionYear [
+
+	^self collectionYears ifEmpty: [ nil ] ifNotEmpty: [ :years | years last ]
+]
+
 { #category : #persistence }
 GeoOPCollectionSchedule >> fileContents [
 	| contents fileReference |

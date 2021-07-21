@@ -8,6 +8,16 @@ Class {
 	#category : #'Geo Oudpapier Domain'
 }
 
+{ #category : #accessing }
+GeoOPCollectionYear class >> neoJsonMappingOn: mapping [
+
+	"year months"
+
+	mapping
+		mapInstVar: #year;
+		mapInstVar: #months
+]
+
 { #category : #testing }
 GeoOPCollectionYear >> isVisible [
 
