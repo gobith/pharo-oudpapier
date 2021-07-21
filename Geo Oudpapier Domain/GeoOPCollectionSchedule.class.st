@@ -296,6 +296,12 @@ GeoOPCollectionSchedule >> nextUserId [
 	^(users ifEmpty: [ 0 ] ifNotEmpty: [ users maxValue: [ :user | user id ] ]) + 1.
 ]
 
+{ #category : #accessing }
+GeoOPCollectionSchedule >> reversedCollectionYears [
+
+	^self collectionYears asSortedCollection: [ : yearA : yearB | yearA year >= yearB year ]
+]
+
 { #category : #actions }
 GeoOPCollectionSchedule >> sendConfirmMailForPartTime: collectionPartTime [
 	| action |
