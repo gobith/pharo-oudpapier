@@ -25,7 +25,8 @@ GeoOPCollectionMonth class >> neoJsonMappingOn: mapping [
 		mapInstVar: #index;
 		mapInstVar: #month;
 		mapAccessor: #year;
-		mapInstVar: #days
+		mapInstVar: #days;
+		mapAccessor: #numberOfColumns
 ]
 
 { #category : #accessing }
@@ -90,6 +91,12 @@ GeoOPCollectionMonth >> monthObject [
 { #category : #accessing }
 GeoOPCollectionMonth >> monthObject: anObject [
 	monthObject := anObject
+]
+
+{ #category : #accessing }
+GeoOPCollectionMonth >> numberOfColumns [
+
+	^days sum: [ : day | day partTimes size ]
 ]
 
 { #category : #accessing }
