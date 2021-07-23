@@ -260,11 +260,11 @@ GeoOPCollectionPartTime >> printOn: aStream [
 { #category : #printing }
 GeoOPCollectionPartTime >> routeString [
 	title = 'Ten Oosten van het Lint (Ochtend)'
-		ifTrue: [ ^ 'route oude dorp en fiets' ].
+		ifTrue: [ ^ 'Route oude dorp en fiets' ].
 	title = 'Ten Oosten van het Lint (Middag)'
-		ifTrue: [ ^ 'route Havezathe' ].
+		ifTrue: [ ^ 'Route Havezathe' ].
 	title = 'Ten Westen van het Lint (Ochtend)'
-		ifTrue: [ ^ 'route West (omgeving Sportlaan, Het Lint en Luijendijk)' ].
+		ifTrue: [ ^ 'Route West (omgeving Sportlaan, Het Lint en Luijendijk)' ].
 	^ title
 ]
 

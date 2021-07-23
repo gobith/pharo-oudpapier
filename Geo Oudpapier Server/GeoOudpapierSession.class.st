@@ -48,12 +48,7 @@ GeoOudpapierSession >> request_login: aRequest [
 
 	| authorization response userName password user session |
 
-	response := Dictionary new.
-	response
-		at: 'id' put: nil;
-		at: 'name' put: '';
-		at: 'loggedIn' put: false;
-		at: 'isAdmin' put: false.
+	response := self userObjectFor: nil.
 
 	authorization := [ aRequest basicAuthentication ]
 		                 on: Error
@@ -69,13 +64,9 @@ GeoOudpapierSession >> request_login: aRequest [
 	session := aRequest session.
 	session attributeAt: 'user' put: user id.
 
-	response
-		at: 'isAdmin' put: user isAdmin;
-		at: 'name' put: user name;
-		at: 'id' put: user id;
-		at: 'loggedIn' put: true.
+	
 		
-	^response
+	^self userObjectFor: user
 ]
 
 { #category : #'accessing-requests' }
@@ -98,28 +89,14 @@ GeoOudpapierSession >> request_logout: aRequest [
 { #category : #'accessing-requests' }
 GeoOudpapierSession >> request_user: aRequest [
 
-	| session response |
-	response := Dictionary new.
-	response
-		at: 'id' put: nil;
-		at: 'name' put: '';
-		at: 'loggedIn' put: false;
-		at: 'isAdmin' put: false.
-
+	| session user |
+	user := nil.
 	session := aRequest session.
 	session isValid ifTrue: [ 
-		(session attributeAt: 'user' ifAbsent: [ nil ]) ifNotNil: [ 
-			:userId | 
-			| user |
-			user := schedule userAt: userId.
-			user ifNotNil: [ 
-				response
-					at: 'isAdmin' put: user isAdmin;
-					at: 'name' put: user name;
-					at: 'id' put: user id;
-					at: 'loggedIn' put: true ] ] ].
+		(session attributeAt: 'user' ifAbsent: [ nil ]) ifNotNil: [ :userId | 
+			user := schedule userAt: userId ] ].
 
-	^ response
+	^ self userObjectFor: user
 ]
 
 { #category : #'accessing-requests' }
@@ -131,6 +108,32 @@ GeoOudpapierSession >> request_users: aRequest [
 { #category : #'accessing-requests' }
 GeoOudpapierSession >> request_years: aRequest [
 	^schedule reversedCollectionYears 
+]
+
+{ #category : #'accessing-objects' }
+GeoOudpapierSession >> scheduledObjectFor: aUser [
+
+	^ (aUser sortedCollectionPartTimes select: [ :partTime | 
+		   partTime isActive and: [ 
+			   partTime isScheduled or: [ partTime isConfirmed ] ] ]) collect: [ 
+		  :userPartTime | 
+		  | dict partTime |
+		  dict := Dictionary new.
+		  partTime := userPartTime partTime.
+		  dict at: 'date' put: ('<1s> <2p> <3s> <4s>'
+				   expandMacrosWith: partTime dayName
+				   with: partTime dayOfMonth
+				   with: partTime monthName
+				   with: (partTime isMorning
+						    ifTrue: [ 'in de ochtend' ]
+						    ifFalse: [ 'in de middag' ])).
+		  dict
+			  at: 'time'
+			  put:
+				  ('<1s> uur op de parkeerplaats aan de Sportlaan' 
+					   expandMacrosWith: partTime startTimeString).
+		  dict at: 'route' put: partTime routeString.
+		  dict ]
 ]
 
 { #category : #initialization }
@@ -155,4 +158,29 @@ GeoOudpapierSession >> stop [
 	teapot ifNotNil: [ teapot stop ].
 	teapot := nil.
 	schedule := nil
+]
+
+{ #category : #'accessing-objects' }
+GeoOudpapierSession >> userObjectFor: aUser [
+
+	| dict |
+	dict := Dictionary new.
+
+	aUser
+		ifNil: [ 
+			dict
+				at: 'id' put: nil;
+				at: 'name' put: '';
+				at: 'loggedIn' put: false;
+				at: 'isAdmin' put: false ]
+		ifNotNil: [ 
+			dict
+				at: 'id' put: aUser id;
+				at: 'name' put: aUser name;
+				at: 'loggedIn' put: true;
+				at: 'isAdmin' put: aUser isAdmin;
+				at: 'scheduled' put: (self scheduledObjectFor: aUser)  ].
+
+	
+	^ dict
 ]
