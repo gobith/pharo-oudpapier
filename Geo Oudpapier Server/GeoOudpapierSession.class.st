@@ -14,6 +14,7 @@ GeoOudpapierSession >> addRoutes [
 	teapot
 		GET: '/getuser' -> [ :request | self request_user: request ];
 		GET: '/login' -> [ :request | self request_login: request ];
+		GET: '/logout' -> [ :request | self request_logout: request ];
 		GET: '/users' -> [ :request | self request_users: request ];
 		GET: '/years' -> [ :request | self request_years: request ];
 		GET: '/current-year' -> [ :request | self request_currentYear: request ]
@@ -75,6 +76,23 @@ GeoOudpapierSession >> request_login: aRequest [
 		at: 'loggedIn' put: true.
 		
 	^response
+]
+
+{ #category : #'accessing-requests' }
+GeoOudpapierSession >> request_logout: aRequest [
+
+	| response |
+	response := Dictionary new.
+	response
+		at: 'id' put: nil;
+		at: 'name' put: '';
+		at: 'loggedIn' put: false;
+		at: 'isAdmin' put: false.
+
+	aRequest session removeAttribute: 'user'.
+
+
+	^ response
 ]
 
 { #category : #'accessing-requests' }
