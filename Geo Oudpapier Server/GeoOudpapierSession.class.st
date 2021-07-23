@@ -45,7 +45,36 @@ GeoOudpapierSession >> request_currentYear: aRequest [
 { #category : #'accessing-requests' }
 GeoOudpapierSession >> request_login: aRequest [
 
-	^'{"test": 12}'
+	| authorization response userName password user session |
+
+	response := Dictionary new.
+	response
+		at: 'id' put: nil;
+		at: 'name' put: '';
+		at: 'loggedIn' put: false;
+		at: 'isAdmin' put: false.
+
+	authorization := [ aRequest basicAuthentication ]
+		                 on: Error
+		                 do: [ nil ].
+
+	authorization ifNil: [ ^response ].
+	userName := authorization first.
+	password := authorization last.
+
+	user := schedule userNamed: userName.
+	user ifNil: [ ^ response ].
+	user password = password ifFalse: [ ^ response ].
+	session := aRequest session.
+	session attributeAt: 'user' put: user id.
+
+	response
+		at: 'isAdmin' put: user isAdmin;
+		at: 'name' put: user name;
+		at: 'id' put: user id;
+		at: 'loggedIn' put: true.
+		
+	^response
 ]
 
 { #category : #'accessing-requests' }
@@ -62,12 +91,17 @@ GeoOudpapierSession >> request_user: aRequest [
 	session := aRequest session.
 	session isValid ifTrue: [ 
 		(session attributeAt: 'user' ifAbsent: [ nil ]) ifNotNil: [ 
-			:userName | 
+			:userId | 
 			| user |
-			user := schedule userNamed: userName.
-			user halt ] ].
+			user := schedule userAt: userId.
+			user ifNotNil: [ 
+				response
+					at: 'isAdmin' put: user isAdmin;
+					at: 'name' put: user name;
+					at: 'id' put: user id;
+					at: 'loggedIn' put: true ] ] ].
 
-	^response
+	^ response
 ]
 
 { #category : #'accessing-requests' }
