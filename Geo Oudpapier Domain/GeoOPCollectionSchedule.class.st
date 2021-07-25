@@ -32,6 +32,8 @@ GeoOPCollectionSchedule >> addAction: anAction [
 GeoOPCollectionSchedule >> addCollectionPartTime: aCollectionPartTime [
 
 	Transcript cr; show: aCollectionPartTime dateAndTime.
+	
+	aCollectionPartTime schedule: self.
 
 	collectionPartTimes at: aCollectionPartTime dateAndTime put: aCollectionPartTime
 ]
@@ -162,33 +164,41 @@ GeoOPCollectionSchedule >> confirmPartTime: collectionPartTime user: user [
 
 { #category : #private }
 GeoOPCollectionSchedule >> createCollectionDays [
-	collectionDays := SortedCollection new sortBlock: [ :dayA :dayB | dayA date <= dayB date ].
-	(self sortedCollectionPartTimes groupedBy: [ :partTime | partTime date ])
-		keysAndValuesDo: [ :date :partTimes | 
-			| day |
-			day := GeoOPCollectionDay new
-				date: date;
-				partTimes: (partTimes asSortedCollection: [ :pta :ptb | pta dateAndTime <= ptb dateAndTime ]).
-			partTimes do: [ :partTime | partTime day: day ].
-			collectionDays add: day ]
+
+	collectionDays := SortedCollection new sortBlock: [ :dayA :dayB | 
+		                  dayA date <= dayB date ].
+	(self sortedCollectionPartTimes groupedBy: [ :partTime | 
+		 partTime date ]) keysAndValuesDo: [ :date :partTimes | 
+		| day |
+		day := GeoOPCollectionDay new
+			       schedule: self;
+			       date: date;
+			       partTimes: (partTimes asSortedCollection: [ :pta :ptb | 
+						        pta dateAndTime <= ptb dateAndTime ]).
+		partTimes do: [ :partTime | partTime day: day ].
+		collectionDays add: day ]
 ]
 
 { #category : #private }
 GeoOPCollectionSchedule >> createCollectionMonths [
+
 	| dict |
 	dict := Dictionary new.
-	collectionMonths := SortedCollection new sortBlock: [ :monthA :monthB | monthA monthObject <= monthB monthObject ].
-	self sortedCollectionDays do: [ :day | (dict at: day date asMonth ifAbsentPut: [ OrderedCollection new ]) add: day ].
-	dict
-		keysAndValuesDo: [ :monthObject :days | 
-			| month |
-			month := GeoOPCollectionMonth new
-				monthObject: monthObject;
-				index: monthObject index;
-				month: (self monthNameForIndex: monthObject index);
-				days: days.
-				days do: [ : day | day month: month ].
-			collectionMonths add: month ]
+	collectionMonths := SortedCollection new sortBlock: [ :monthA :monthB | 
+		                    monthA monthObject <= monthB monthObject ].
+	self sortedCollectionDays do: [ :day | 
+		(dict at: day date asMonth ifAbsentPut: [ OrderedCollection new ]) 
+			add: day ].
+	dict keysAndValuesDo: [ :monthObject :days | 
+		| month |
+		month := GeoOPCollectionMonth new
+			         schedule: self;
+			         monthObject: monthObject;
+			         index: monthObject index;
+			         month: (self monthNameForIndex: monthObject index);
+			         days: days.
+		days do: [ :day | day month: month ].
+		collectionMonths add: month ]
 ]
 
 { #category : #private }
@@ -202,7 +212,8 @@ GeoOPCollectionSchedule >> createCollectionYears [
 			| year |
 			year := GeoOPCollectionYear new
 				year: yearInt;
-				months: months.
+				months: months;
+				schedule: self.
 			collectionYears add: year ]
 ]
 
@@ -427,6 +438,22 @@ GeoOPCollectionSchedule >> sortedUsers [
 { #category : #accessing }
 GeoOPCollectionSchedule >> sortedUsersInSchedule [
 	^ self sortedUsers select: [ :user | user showInSchedule ]
+]
+
+{ #category : #accessing }
+GeoOPCollectionSchedule >> sortedUsersInScheduleMappedToPartTimeStatus [
+
+	^self sortedUsersInSchedule collect: [ :user | 
+		Dictionary new
+			at: 'id' put: user id;
+			at: 'name' put: user name;
+			at: 'partTimes'
+			put: (user collectionPartTimes  asOrderedCollection collect: [ :partTime | 
+						 Dictionary new
+							 at: 'datetime' put: partTime dateAndTimeString;
+							 at: 'status' put: partTime statusSymbol;
+							 yourself ]);
+			yourself ]
 ]
 
 { #category : #actions }

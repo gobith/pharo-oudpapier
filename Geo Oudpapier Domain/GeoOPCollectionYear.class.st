@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'year',
-		'months'
+		'months',
+		'schedule'
 	],
 	#category : #'Geo Oudpapier Domain'
 }
@@ -44,6 +45,18 @@ GeoOPCollectionYear >> numberOfPartTimes [
 GeoOPCollectionYear >> numberOfVisiblePartTimes [
 
 	^months sum: [ : month | month numberOfVisiblePartTimes ]
+]
+
+{ #category : #accessing }
+GeoOPCollectionYear >> schedule [
+
+	^ schedule
+]
+
+{ #category : #accessing }
+GeoOPCollectionYear >> schedule: anObject [
+
+	schedule := anObject
 ]
 
 { #category : #accessing }

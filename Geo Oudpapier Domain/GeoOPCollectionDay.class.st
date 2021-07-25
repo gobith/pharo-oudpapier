@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'date',
 		'month',
-		'partTimes'
+		'partTimes',
+		'schedule'
 	],
 	#category : #'Geo Oudpapier Domain'
 }
@@ -83,6 +84,18 @@ GeoOPCollectionDay >> partTimes [
 { #category : #accessing }
 GeoOPCollectionDay >> partTimes: anObject [
 	partTimes := anObject
+]
+
+{ #category : #accessing }
+GeoOPCollectionDay >> schedule [
+
+	^ schedule
+]
+
+{ #category : #accessing }
+GeoOPCollectionDay >> schedule: anObject [
+
+	schedule := anObject
 ]
 
 { #category : #accessing }

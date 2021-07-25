@@ -107,7 +107,16 @@ GeoOudpapierSession >> request_users: aRequest [
 
 { #category : #'accessing-requests' }
 GeoOudpapierSession >> request_years: aRequest [
-	^schedule reversedCollectionYears 
+
+	| dict |
+	dict := Dictionary new.
+self halt.
+	dict at: 'years' put: schedule reversedCollectionYears.
+	dict
+		at: 'users'
+		put: schedule sortedUsersInScheduleMappedToPartTimeStatus.
+
+	^ dict
 ]
 
 { #category : #'accessing-objects' }

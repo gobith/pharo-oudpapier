@@ -5,7 +5,8 @@ Class {
 		'monthObject',
 		'month',
 		'index',
-		'days'
+		'days',
+		'schedule'
 	],
 	#category : #'Geo Oudpapier Domain'
 }
@@ -107,6 +108,18 @@ GeoOPCollectionMonth >> numberOfPartTimes [
 { #category : #accessing }
 GeoOPCollectionMonth >> numberOfVisiblePartTimes [
 	^days sum: [ :day | day visiblePartTimes size ]
+]
+
+{ #category : #accessing }
+GeoOPCollectionMonth >> schedule [
+
+	^ schedule
+]
+
+{ #category : #accessing }
+GeoOPCollectionMonth >> schedule: anObject [
+
+	schedule := anObject
 ]
 
 { #category : #accessing }

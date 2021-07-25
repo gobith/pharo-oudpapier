@@ -8,7 +8,8 @@ Class {
 		'numberOfUsers',
 		'needCar',
 		'status',
-		'nrOfSendMail'
+		'nrOfSendMail',
+		'schedule'
 	],
 	#category : #'Geo Oudpapier Domain'
 }
@@ -30,7 +31,6 @@ GeoOPCollectionPartTime class >> neoJsonMappingOn: mapping [
 		mapAccessor: #statusSymbol to: #status;
 		mapAccessor: #longName;
 		mapAccessor: #shortName
-		
 ]
 
 { #category : #accessing }
@@ -266,6 +266,18 @@ GeoOPCollectionPartTime >> routeString [
 	title = 'Ten Westen van het Lint (Ochtend)'
 		ifTrue: [ ^ 'Route West (omgeving Sportlaan, Het Lint en Luijendijk)' ].
 	^ title
+]
+
+{ #category : #accessing }
+GeoOPCollectionPartTime >> schedule [
+
+	^ schedule
+]
+
+{ #category : #accessing }
+GeoOPCollectionPartTime >> schedule: anObject [
+
+	schedule := anObject
 ]
 
 { #category : #printing }
