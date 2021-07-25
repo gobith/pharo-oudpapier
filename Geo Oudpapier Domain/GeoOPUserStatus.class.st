@@ -43,6 +43,18 @@ GeoOPUserStatus class >> singleInstance [
 ]
 
 { #category : #accessing }
+GeoOPUserStatus class >> status [
+	^ {GeoOPUserStatusScheduled.
+	GeoOPUserStatusScheduledDriver.
+	GeoOPUserStatusConfirmed .
+	GeoOPUserStatusConfirmedDriver .
+	GeoOPUserStatusICan.
+	GeoOPUserStatusICanNot.
+	GeoOPUserStatusNeutral}
+		collect: [ :statusClass | statusClass singleInstance ]
+]
+
+{ #category : #accessing }
 GeoOPUserStatus class >> statusSymbol [
 
 	^nil
@@ -139,11 +151,23 @@ GeoOPUserStatus >> isScheduledOrConfirmed [
 ]
 
 { #category : #accessing }
+GeoOPUserStatus >> nextAdminStatuses [
+	| coll |
+	coll := OrderedCollection new.
+	self nextAdminStatusesOn: coll.
+	^ coll
+]
+
+{ #category : #accessing }
 GeoOPUserStatus >> nextAdminStatusesFor: aUser [
 	| coll |
 	coll := OrderedCollection new.
 	self nextAdminStatusesOn: coll user: aUser.
 	^ coll
+]
+
+{ #category : #accessing }
+GeoOPUserStatus >> nextAdminStatusesOn: coll [
 ]
 
 { #category : #accessing }

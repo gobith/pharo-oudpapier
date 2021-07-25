@@ -29,6 +29,11 @@ GeoOPUserStatusICanNot >> color [
 ]
 
 { #category : #accessing }
+GeoOPUserStatusICanNot >> nextAdminStatusesOn: coll [
+	coll add: self iCanStatus
+]
+
+{ #category : #accessing }
 GeoOPUserStatusICanNot >> nextAdminStatusesOn: coll user: aUser [
 	coll add: self iCanStatus
 ]

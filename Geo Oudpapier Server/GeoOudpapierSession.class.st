@@ -110,11 +110,17 @@ GeoOudpapierSession >> request_years: aRequest [
 
 	| dict |
 	dict := Dictionary new.
-self halt.
+
 	dict at: 'years' put: schedule reversedCollectionYears.
 	dict
 		at: 'users'
-		put: schedule sortedUsersInScheduleMappedToPartTimeStatus.
+		put: (schedule sortedUsersInSchedule
+		collect: [ :user | 
+			Dictionary new
+				at: 'id' put: user id;
+				at: 'name' put: user name;
+				yourself ]).
+			dict at: 'status' put: schedule statusCollection.
 
 	^ dict
 ]

@@ -32,6 +32,13 @@ GeoOPPartTimeStatus class >> singleInstance [
 	^ singleInstance
 ]
 
+{ #category : #'instance creation' }
+GeoOPPartTimeStatus class >> status [
+
+	^ self allSubclasses collect: [ :statusClass | 
+		  statusClass singleInstance ]
+]
+
 { #category : #accessing }
 GeoOPPartTimeStatus >> buttonString [
 

@@ -30,6 +30,12 @@ GeoOPUserStatusConfirmed >> isConfirmed [
 ]
 
 { #category : #accessing }
+GeoOPUserStatusConfirmed >> nextAdminStatusesOn: coll [
+	coll
+		add: self iCannotStatus
+]
+
+{ #category : #accessing }
 GeoOPUserStatusConfirmed >> nextAdminStatusesOn: coll user: aUser [
 	coll
 		add: self iCannotStatus

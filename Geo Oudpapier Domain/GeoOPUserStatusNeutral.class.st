@@ -17,6 +17,13 @@ GeoOPUserStatusNeutral class >> userStatusString [
 ]
 
 { #category : #accessing }
+GeoOPUserStatusNeutral >> nextAdminStatusesOn: coll [
+	coll
+		add: self iCanStatus;
+		add: self iCannotStatus
+]
+
+{ #category : #accessing }
 GeoOPUserStatusNeutral >> nextAdminStatusesOn: coll user: aUser [
 	coll
 		add: self iCanStatus;

@@ -29,6 +29,14 @@ GeoOPUserStatusScheduled >> isScheduled [
 ]
 
 { #category : #accessing }
+GeoOPUserStatusScheduled >> nextAdminStatusesOn: coll [ 
+	coll
+		add: self iCanStatus;
+		add: self iCannotStatus;
+		add: self confirmedStatus
+]
+
+{ #category : #accessing }
 GeoOPUserStatusScheduled >> nextAdminStatusesOn: coll user: aUser [
 	coll
 		add: self iCanStatus;

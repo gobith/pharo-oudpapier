@@ -34,6 +34,13 @@ GeoOPUserStatusICan >> isICan [
 ]
 
 { #category : #accessing }
+GeoOPUserStatusICan >> nextAdminStatusesOn: coll [ 
+	coll
+		add: self scheduledStatus;
+		add: self iCannotStatus
+]
+
+{ #category : #accessing }
 GeoOPUserStatusICan >> nextAdminStatusesOn: coll user: aUser [
 	aUser isDriver
 		ifTrue: [ coll add: self scheduledDriverStatus ].

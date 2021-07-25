@@ -456,6 +456,31 @@ GeoOPCollectionSchedule >> sortedUsersInScheduleMappedToPartTimeStatus [
 			yourself ]
 ]
 
+{ #category : #accessing }
+GeoOPCollectionSchedule >> statusCollection [
+
+	| dict |
+	dict := Dictionary new.
+
+	dict
+		at: 'partTime'
+		put: (GeoOPPartTimeStatus status collect: [ :each | 
+					 Dictionary new
+						 at: 'name' put: each statusString;
+						 at: 'symbol' put: each statusSymbol;
+						 at: 'next' put: each nextStatus statusSymbol;
+						 yourself ]);
+		at: 'user' put: (GeoOPUserStatus status collect: [ :each | 
+			 Dictionary new
+				 at: 'name' put: each userStatusString;
+				 at: 'symbol' put: each statusSymbol;
+				 at: 'next'
+				 put:
+					 (each nextAdminStatuses collect: [ :e | e statusSymbol ]);
+				 yourself ]).
+	^ dict
+]
+
 { #category : #actions }
 GeoOPCollectionSchedule >> updateRolesFor: aUser websiteRoleString: websiteRoleString roleString: roleString [
 	| action |

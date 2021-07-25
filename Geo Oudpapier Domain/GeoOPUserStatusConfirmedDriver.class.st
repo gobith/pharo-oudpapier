@@ -36,6 +36,12 @@ GeoOPUserStatusConfirmedDriver >> isConfirmedDriver [
 ]
 
 { #category : #accessing }
+GeoOPUserStatusConfirmedDriver >> nextAdminStatusesOn: coll [
+	coll
+		add: self iCannotStatus
+]
+
+{ #category : #accessing }
 GeoOPUserStatusConfirmedDriver >> nextAdminStatusesOn: coll user: aUser [
 	coll
 		add: self iCannotStatus

@@ -9,7 +9,8 @@ Class {
 		'needCar',
 		'status',
 		'nrOfSendMail',
-		'schedule'
+		'schedule',
+		'sortedUserPartTimes'
 	],
 	#category : #'Geo Oudpapier Domain'
 }
@@ -30,7 +31,8 @@ GeoOPCollectionPartTime class >> neoJsonMappingOn: mapping [
 		mapInstVar: #numberOfUsers;
 		mapAccessor: #statusSymbol to: #status;
 		mapAccessor: #longName;
-		mapAccessor: #shortName
+		mapAccessor: #shortName;
+		mapAccessor: #sortedUserAndStatus to: #users
 ]
 
 { #category : #accessing }
@@ -304,6 +306,25 @@ GeoOPCollectionPartTime >> scheduledHtmlStringOn: ws [
 GeoOPCollectionPartTime >> shortName [
 
 	^self subclassResponsibility 
+]
+
+{ #category : #accessing }
+GeoOPCollectionPartTime >> sortedUserAndStatus [
+
+	^ self sortedUserPartTimes collect: [ :partTime | 
+		  Dictionary new
+			  at: 'user' put: partTime user id;
+			  at: 'status' put: partTime statusSymbol;
+			  yourself ]
+]
+
+{ #category : #accessing }
+GeoOPCollectionPartTime >> sortedUserPartTimes [
+
+	sortedUserPartTimes ifNil: [ 
+		sortedUserPartTimes := schedule sortedUsersInSchedule collect: [ 
+			                       :user | user collectionPartTimeAt: self ] ].
+	^ sortedUserPartTimes
 ]
 
 { #category : #accessing }

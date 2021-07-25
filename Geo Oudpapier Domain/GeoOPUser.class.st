@@ -28,8 +28,8 @@ GeoOPUser class >> neoJsonMappingOn: mapping [
 		mapInstVar: #phoneNumber;
 		mapAccessor: #roleString to: #role;
 		mapAccessor: #websiteRoleString to: #websiteRole;
-		mapAccessor: #showInSchedule;
-		mapAccessor: #sortedCollectionPartTimes to: #partTimes
+		mapAccessor: #showInSchedule
+	"	mapAccessor: #sortedCollectionPartTimes to: #partTimes"
 		
 ]
 
