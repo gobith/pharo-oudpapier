@@ -20,6 +20,26 @@ GeoOudpapierSession >> addRoutes [
 		GET: '/current-year' -> [ :request | self request_currentYear: request ]
 ]
 
+{ #category : #'accessing-objects' }
+GeoOudpapierSession >> adminYears [
+
+	| dict |
+	dict := Dictionary new.
+
+	dict at: 'years' put: schedule reversedCollectionYears.
+	dict
+		at: 'users'
+		put: (schedule sortedUsersInSchedule
+		collect: [ :user | 
+			Dictionary new
+				at: 'id' put: user id;
+				at: 'name' put: user name;
+				yourself ]).
+			dict at: 'status' put: schedule statusCollection.
+
+	^ dict
+]
+
 { #category : #initialization }
 GeoOudpapierSession >> initialize [ 
 
@@ -33,6 +53,27 @@ GeoOudpapierSession >> login: aRequest [
 	^'{"test": 12}'
 ]
 
+{ #category : #'accessing-objects' }
+GeoOudpapierSession >> normalUserYears [
+
+		| dict |
+	dict := Dictionary new.
+
+	dict at: 'years' put: (Array with: schedule currentCollectionYear ).
+	dict
+		at: 'users'
+		put: (schedule sortedUsersInSchedule
+		collect: [ :user | 
+			Dictionary new
+				at: 'id' put: user id;
+				at: 'name' put: user name;
+				yourself ]).
+			dict at: 'status' put: schedule statusCollection.
+
+	^ dict
+
+]
+
 { #category : #initialization }
 GeoOudpapierSession >> portNumber [
 	^ 8090
@@ -40,7 +81,23 @@ GeoOudpapierSession >> portNumber [
 
 { #category : #'accessing-requests' }
 GeoOudpapierSession >> request_currentYear: aRequest [ 
-	^schedule currentCollectionYear 
+
+		| dict |
+	dict := Dictionary new.
+
+	dict at: 'years' put: (Array with: schedule currentCollectionYear ).
+	dict
+		at: 'users'
+		put: (schedule sortedUsersInSchedule
+		collect: [ :user | 
+			Dictionary new
+				at: 'id' put: user id;
+				at: 'name' put: user name;
+				yourself ]).
+			dict at: 'status' put: schedule statusCollection.
+
+	^ dict
+
 ]
 
 { #category : #'accessing-requests' }
@@ -108,21 +165,13 @@ GeoOudpapierSession >> request_users: aRequest [
 { #category : #'accessing-requests' }
 GeoOudpapierSession >> request_years: aRequest [
 
-	| dict |
-	dict := Dictionary new.
+	| user |
+	user := self userOrNilFor: aRequest.
+	user ifNil: [ ^ Dictionary new ].
 
-	dict at: 'years' put: schedule reversedCollectionYears.
-	dict
-		at: 'users'
-		put: (schedule sortedUsersInSchedule
-		collect: [ :user | 
-			Dictionary new
-				at: 'id' put: user id;
-				at: 'name' put: user name;
-				yourself ]).
-			dict at: 'status' put: schedule statusCollection.
-
-	^ dict
+	^ user isAdmin
+		  ifTrue: [ self adminYears ]
+		  ifFalse: [ self normalUserYears ]
 ]
 
 { #category : #'accessing-objects' }
@@ -198,4 +247,17 @@ GeoOudpapierSession >> userObjectFor: aUser [
 
 	
 	^ dict
+]
+
+{ #category : #'accessing-requests' }
+GeoOudpapierSession >> userOrNilFor: aRequest [
+
+	| session user |
+	user := nil.
+	session := aRequest session.
+	session isValid ifTrue: [ 
+		(session attributeAt: 'user' ifAbsent: [ nil ]) ifNotNil: [ :userId | 
+			user := schedule userAt: userId ] ].
+
+	^ user
 ]
